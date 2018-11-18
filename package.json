@@ -4,8 +4,15 @@
   "description": "Find all the customers who are in X km radius and invite them for food",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node src/index.js",
+    "lint": "eslint src/**",
+    "test": "jest tests",
+    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src"
   },
   "author": "Prakash Kumar <mail@prakash.io>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-plugin-jest": "^22.0.0",
+    "jest": "^23.6.0"
+  }
 }

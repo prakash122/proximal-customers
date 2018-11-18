@@ -30,6 +30,6 @@ customerDataStream.on('close', function () {
   const sortedCustomers = invitedCustomers.sort(function (a, b) {
     return a.user_id - b.user_id;
   });
-  console.log(sortedCustomers);
+  sortedCustomers.forEach(record => console.log(`${record.name} (${record.user_id})`));
 })
 

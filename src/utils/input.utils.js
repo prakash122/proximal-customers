@@ -4,8 +4,8 @@ const fileUtils = require('./file.utils');
 function getValidatedDataInput() {
 
   const circleDataPath = process.argv[3]
-    ? path.resolve(process.argv)
-    : path.resolve(__dirname, '../data/default-circle.json');
+    ? path.resolve(process.argv[3])
+    : path.resolve(__dirname, '../../data/default-circle.json');
 
   if (!fileUtils.isReadablePath(circleDataPath, true)) {
     console.error('Invalid path provided for the circle details');
@@ -13,8 +13,8 @@ function getValidatedDataInput() {
   }
 
   const customerDataPath = process.argv[2]
-    ? path.resolve(process.argv)
-    : path.resolve(__dirname, '../data/customers.txt');
+    ? path.resolve(process.argv[2])
+    : path.resolve(__dirname, '../../data/customers.txt');
 
   if (!fileUtils.isReadablePath(customerDataPath, true)) {
     console.error('Invalid path provided for the customer details');
