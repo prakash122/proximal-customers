@@ -35,25 +35,24 @@ try {
     */
   function processCustomerIterator(customerRecordString) {
 
-    const customer = commonLib.parseCustomerRecord(customerRecordString);
-    if (!customer) {
-      console.error(`Ignored the customer record may be because of incomplete or invalid details
-    \n\t ${customerRecordString}`);
-      return;
-    }
+    try {
+      const customer = commonLib.parseCustomerRecord(customerRecordString);
 
-    // Created an explicit variable as isInCircle wants to have only the customer geolocation
-    const customerLocation = {
-      latitude: customer.latitude,
-      longitude: customer.longitude
-    };
+      // Created an explicit variable as isInCircle wants to have only the customer geolocation
+      const customerLocation = {
+        latitude: customer.latitude,
+        longitude: customer.longitude
+      };
 
-    // If the customer location is in the radius we chose  
-    if (geometryUtils.isInCircle(circleData, customerLocation)) {
-      invitedCustomers.push({
-        user_id: customer.user_id,
-        name: customer.name
-      });
+      // If the customer location is in the radius we chose  
+      if (geometryUtils.isInCircle(circleData, customerLocation)) {
+        invitedCustomers.push({
+          user_id: customer.user_id,
+          name: customer.name
+        });
+      }
+    } catch (error) {
+      console.error(error.message || error);
     }
   }
 

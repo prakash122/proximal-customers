@@ -17,7 +17,7 @@ function isReadablePath(path, runSync) {
       fs.accessSync(path, fs.constants.R_OK)
       return true;
     } catch (err) {
-      console.error('Error while reading the file\n', path, err);
+      // console.error('Error while reading the file\n', path, err);
       return false;
     }
   }
@@ -25,7 +25,7 @@ function isReadablePath(path, runSync) {
   return new Promise((resolve, reject) => {
     fs.access(file, fs.constants.R_OK, (err) => {
       if (err) {
-        console.error('Error while reading the file\n', path, err);
+        // console.error('Error while reading the file\n', path, err);
       }
       return resolve(!err);
     });

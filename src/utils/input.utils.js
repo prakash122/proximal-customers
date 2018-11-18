@@ -3,23 +3,35 @@ const fileUtils = require('./file.utils');
 
 /**
  * Validates the data paths which are passed as arguments
- *  argArray is expected to be of size 2 with first record being the path of customer data
- *    and second is the path to the circle definition
+ * Sample args will look like
+ *  [
+ *       'customer=./data/customers.txt',
+ *       'circle-definition=./data/default-circle.json'
+ *  ];
  * @param {*} argArray 
  */
 function getValidatedDataInput(argArray) {
 
-  const circleDataPath = argArray[1]
-    ? path.resolve(argArray[1])
-    : path.resolve(__dirname, '../../data/default-circle.json');
+  argArray = argArray || [];
+
+  let circleDataPath = path.resolve(__dirname, '../../data/default-circle.json');
+  let customerDataPath = path.resolve(__dirname, '../../data/customers.txt');
+
+  argArray.forEach(arg => {
+    const splits = arg.split('=');
+    switch (splits[0]) {
+      case 'customer':
+        customerDataPath = splits.slice(1).join('');
+        break;
+      case 'circle-definition':
+        circleDataPath = splits.slice(1).join('')
+        break;
+    }
+  });
 
   if (!fileUtils.isReadablePathSync(circleDataPath)) {
     throw new Error('Invalid path provided for the circle details');
   }
-
-  const customerDataPath = argArray[0]
-    ? path.resolve(argArray[0])
-    : path.resolve(__dirname, '../../data/customers.txt');
 
   if (!fileUtils.isReadablePathSync(customerDataPath)) {
     throw new Error('Invalid path provided for the customer details');

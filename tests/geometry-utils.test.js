@@ -29,7 +29,8 @@ describe('Distance b/w 2 geo-locations', () => {
     const point1 = { latitude: 12.952879, longitude: 77.660349 };
     const point2 = { latitude: 12.952890, longitude: 77.657871 }
     const distance = geometryUtils.getGreatCircleDistance(point1, point2);
-    console.log(distance);
+    expect(distance).toBeLessThanOrEqual(0.3);
+    expect(distance).toBeGreaterThanOrEqual(0.2);
   })
 
   test('When points are given in string format', () => {
@@ -58,16 +59,72 @@ describe('Distance b/w 2 geo-locations', () => {
     const distance = geometryUtils.getGreatCircleDistance(point1, point2);
     expect(distance).toBeNull();
   })
-
-})
+});
 
 describe('Convert to Radians', () => {
-  test('When')
-})
+  test('convert degrees to radians', () => {
+    const sampleDegreeValue = '90';
+    const expectedRadianValue = 1.5708
+    const actualRadianValue = geometryUtils.getRadiansFromDegrees(sampleDegreeValue);
+
+    // Comparing to four decimals
+    expect(Math.round(10000 * actualRadianValue))
+      .toBe(expectedRadianValue * 10000)
+  })
+});
 
 describe('Is In proximity', () => {
-  test('When the radius is 0')
-  test('When the point has an invalid return false')
-  test('When the circle details are invalid return false')
-  test('When the point on the circumference return true')
+  test('When the center is a pole with radius as 0', () => {
+    const circleDefinition = {
+      radius: 0,
+      center: {
+        latitude: 90,
+        longitude: 180
+      }
+    };
+
+    const northPole = { latitude: 90, longitude: 0 }
+    expect(geometryUtils.isInCircle(circleDefinition, northPole)).toBe(true);
+    const southPole = { latitude: -90, longitude: 1 }
+    expect(geometryUtils.isInCircle(circleDefinition, southPole)).toBe(false);
+  })
+
+  test('When the point has an invalid location return false', () => {
+    const circleDefinition = {
+      radius: 0,
+      center: {
+        latitude: 90,
+        longitude: 180
+      }
+    };
+
+    const invalidPoint = { latitude: 900, longitude: 0 }
+    expect(geometryUtils.isInCircle(circleDefinition, invalidPoint)).toBe(false);
+  });
+
+  test('When the circle details are invalid return false', () => {
+    const inValidCircleDefinition = {
+      radius: 0,
+      center: {
+        latitude: 90,
+        longitude: 190 // Invalid valid for a longitude
+      }
+    };
+
+    const invalidPoint = { latitude: 90, longitude: 0 }
+    expect(geometryUtils.isInCircle(inValidCircleDefinition, invalidPoint)).toBe(false);
+  });
+
+  test('when the point is inside circle Return true', () => {
+    const circleDefinition = {
+      "center": {
+        "latitude": 53.339428,
+        "longitude": -7.257664
+      },
+      "radius": 100
+    };
+
+    const nearbyCustomer = { "latitude": "53.2451022", "user_id": 4, "name": "Ian Kehoe", "longitude": "-6.238335" };
+    expect(geometryUtils.isInCircle(circleDefinition, nearbyCustomer)).toBe(true);
+  });
 })

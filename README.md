@@ -14,7 +14,11 @@ There are two files in the `data` directory of the repository which will be used
 
 
 ### Custom Input format
-In case, you want to run the application with custom input by providing the circle information and customer data
+In case, you want to run the application with custom input by providing the circle information and customer data. You can run the application with custom data paths like below
+
+```
+> npm start customer=./data/customers.txt circle-definition=./data/default-circle.json
+```
 
 ##### Circle Info
 This is not a cicle on a 2D Plane but, it is a circle placed over a Sphere. For ease of understanding I used the terminology of a circle, it's center and it's radius.
@@ -39,7 +43,8 @@ A single customer record will be holding his geo-location along with his name an
 
 ```
 
-
+## Tests
+Tests have been written for all the `libs` and `utils`. Main logic is in them. So, no tests are written on index.js. To check all the tests the application has run `npm test`. Code coverage can be viewed using `npm run coverage`
 
 ## Distance calculation
 
@@ -48,7 +53,7 @@ A single customer record will be holding his geo-location along with his name an
 ![Formula](https://res.cloudinary.com/common/image/upload/c_scale,w_500/v1542477000/c3159d773b79d31c3f5ff176a6262fabd20cdbc9_ay4gl6.png)
 
 
-## Coding process
+## Coding Thought process
 I would like to walk through the thought process behind the implementation.
 
 ##### Conventions
@@ -57,7 +62,8 @@ Code organization is easily comprehensible but naming convention is something I 
 
 The main logic is processing the customer record and checking if he/she is in proximity which is covered by `index.js`. Rest of the files are providing valuable utilities to attain this task. So, each of them is named `{domain}`.`utils`.js
 
-##### Clustering
-
 ##### Output
 Output of the application is logged to the console along with writing to a file with a dynamic name into a folder called `output`. It will help in cross checking the outputs with different inputs. Don't worry on multiple files getting created, you can clear all of them with `npm run clean`.
+
+##### Synchronous I/O
+There are few places I used a synchronous I/O which is not right in a single threaded Event based I/O platform. But, given no input data this application is useless so I chose to go with synchronous I/O. 
