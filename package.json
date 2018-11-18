@@ -1,0 +1,11 @@
+{
+  "name": "nearer-customers",
+  "version": "0.1.0",
+  "description": "Find all the customers who are in X km radius and invite them for food",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Prakash Kumar <mail@prakash.io>",
+  "license": "MIT"
+}
