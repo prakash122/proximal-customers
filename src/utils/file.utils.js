@@ -1,4 +1,6 @@
 const fs = require('fs');
+var mkdirp = require('mkdirp');
+var getDirName = require('path').dirname;
 
 /**
  * Checks if a file path is readable or not
@@ -30,6 +32,43 @@ function isReadablePath(path, runSync) {
   });
 }
 
+/**
+ * Checks a file whether readable or not in a synchronous manner
+ *  Usually this will be used during the application start 
+ *  when the file's existence is a must for starting the application
+ * @param {*} path 
+ */
+function isReadablePathSync(path) {
+  return isReadablePath(path, true);
+}
+
+/**
+ * Write the contents to a file in filepath.
+ * This will create the file
+ * @param {*} filePath 
+ * @param {*} contents 
+ * @param {*} cb 
+ */
+function saveToFile(filePath, contents, cb) {
+
+  if (!contents || !filePath) {
+    throw new Error('Incomplete details to save to a file');
+  }
+
+  if (!cb) {
+    cb = err => err
+      ? console.error(`Error writing to file ${filePath}`)
+      : console.log(`Successfully written to file ${filePath}`)
+  }
+
+  mkdirp(getDirName(filePath), function (err) {
+    if (err) return cb(err);
+
+    fs.writeFile(filePath, contents, cb);
+  });
+}
+
 module.exports = {
-  isReadablePath
+  isReadablePathSync,
+  saveToFile
 };

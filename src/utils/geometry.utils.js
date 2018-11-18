@@ -4,7 +4,7 @@ const MEAN_EARTH_RADIUS = 6371;
 function isInCircle(circle, point) {
 
   const distance = getGreatCircleDistance(circle.center, point);
-  return distance < circle.radius;
+  return distance && distance < circle.radius;
 }
 
 function getRadiansFromDegrees(degreeValue) {
@@ -12,7 +12,23 @@ function getRadiansFromDegrees(degreeValue) {
   return parseFloat(degreeValue) * 0.0174533;
 }
 
+function isGeoLocationValid(geoLocation) {
+
+  if (!geoLocation || !geoLocation.latitude || !geoLocation.longitude) {
+    return false;
+  }
+
+  const parsedLatitude = parseFloat(geoLocation.latitude);
+  const parsedLongitude = parseFloat(geoLocation.longitude);
+  return (parsedLatitude >= -90 && parsedLatitude <= 90) &&
+    (parsedLongitude >= -180 && parsedLongitude <= 180);
+}
+
 function getGreatCircleDistance(point1, point2) {
+
+  if (!isGeoLocationValid(point1) || !isGeoLocationValid(point2)) {
+    return null;
+  }
 
   const x1 = getRadiansFromDegrees(point1.latitude),
     y1 = getRadiansFromDegrees(point1.longitude);
@@ -33,5 +49,6 @@ function getGreatCircleDistance(point1, point2) {
 module.exports = {
   isInCircle,
   getRadiansFromDegrees,
-  getGreatCircleDistance
+  getGreatCircleDistance,
+  isGeoLocationValid
 }
