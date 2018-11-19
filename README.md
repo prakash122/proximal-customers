@@ -67,3 +67,8 @@ Output of the application is logged to the console along with writing to a file 
 
 ##### Synchronous I/O
 There are few places I used a synchronous I/O which is not right in a single threaded Event based I/O platform. But, given no input data this application is useless so I chose to go with synchronous I/O. 
+
+##### Clustering
+NodeJS uses a single core of the processor unless clustering is used. The complex computation that can be run on multiple cores is the distance calculation. 
+
+Currently, a simple distance calculation is taking less than `1 micro second`. If this is more and we want to increase the speed of our application taking advantage of the NodeJS cluster we can push the calculation to a new process and once the distance is computed the created child process will inform the master and master will collect the nearby customers from all the processes and show the results.

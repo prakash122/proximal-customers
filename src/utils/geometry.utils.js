@@ -13,7 +13,7 @@ function isInCircle(circle, point) {
   }
 
   const distance = getGreatCircleDistance(circle.center, point);
-  return distance && distance < circle.radius;
+  return distance && distance <= circle.radius;
 }
 
 /**

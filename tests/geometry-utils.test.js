@@ -24,6 +24,22 @@ describe('Distance b/w 2 geo-locations', () => {
     expect(difference).toBeGreaterThanOrEqual(-100)
   })
 
+  test('When the point is on the rim of the circle', () => {
+    const circleDefinition = {
+      center: {
+        latitude: 53.339428,
+        longitude: -7.257664
+      }
+    };
+    const location = {
+      latitude: "53.2451022",
+      longitude: "-6.238335"
+    };
+    // Setting radius as distance between points
+    circleDefinition.radius = geometryUtils.getGreatCircleDistance(circleDefinition.center, location);
+    expect(geometryUtils.isInCircle(circleDefinition, location)).toBeTruthy();
+  })
+
   test('Points are as near as 200 metre', () => {
 
     const point1 = { latitude: 12.952879, longitude: 77.660349 };
